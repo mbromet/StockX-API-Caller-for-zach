@@ -14,22 +14,41 @@ stockx_get = () => {
   let jsonString = '';
   for (let i = 1; i < numPages; i++) { // this will actually give numPages - 1, but that shouldn't be a problem
     myArr[3] = 'page=' + i;
-    let tempUrl = '' + myArr[0] + myArr[1] + myArr[2] + myArr[3] + myArr[4] + myArr[5] + myArr[6];//this needs to be cleaned up later
+    let tempUrl = '' + myArr[0] + '&' + myArr[1] + '&' + myArr[2] + '&' + myArr[3] + '&' + myArr[4] + '&' + myArr[5] + '&' + myArr[6];//this needs to be cleaned up later
+    // console.log('temp url: ' + tempUrl);
     fetch(tempUrl)
-      .then(data => {
-
-        jsonString += JSON.stringify(data);
-        console.log(jsonString);
-
+      .then(data => data.text())
+      .then(updatedData => {
+        jsonString += updatedData;
+        // console.log(jsonString);
+        console.log('inside of the .then');
+        if (i == numPages) {
+          console.log('inside of if statement: ' + jsonString);
+        }
       })
-    console.log(tempUrl);
 
   }
+  setTimeout(() => {
+    console.log('timeout happened ');
+    downloadFiles(jsonString, 'stockx-data');
+  }, 3000);
   //console.log(jsonString);
   // console.log(myArr);
 }
-
-
+const saveData = (function () {
+  const a = document.createElement("a");
+  document.body.appendChild(a);
+  a.style = "display: none";
+  return function (data, fileName) {
+    var json = JSON.stringify(data),
+      blob = new Blob([json], { type: "octet/stream" }),
+      url = window.URL.createObjectURL(blob);
+    a.href = url;
+    a.download = fileName;
+    a.click();
+    window.URL.revokeObjectURL(url);
+  };
+}());
 // ConvertToCSV comes from @praneybehl from https://stackoverflow.com/questions/8847766/how-to-convert-json-to-csv-format-and-store-in-a-variable
 function ConvertToCSV(objArray) {
   var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
