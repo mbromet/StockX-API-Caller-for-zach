@@ -1,21 +1,54 @@
 <!DOCTYPE html>
 
 <html lang="en">
-  <head>
-    hackoman
-  </head>
 
-  <div id="username_password">
-    username and password for stockx
-    <div id="username">
-      <input>username</input>
-    </div>
-    <div id="password">
-      <input>password</input>
-          | this is stored in plaintext because we are ratchet af
-    </div>
-    <button type="button" id="psw/user">swag</button>
-    
+<head>
+  <title>yeezus hackoman stockx sales scraper</title>
+  <script src="../src/stockx_get.js"></script>
+</head>
+
+<body>
+  <form id="input information" action="">
+    <p id="stockxUrl">
+      <input type="text" id="url" name="url"></input>
+      <label>Stockx URL</label>
+    </p>
+    <p id="numPages">
+      <input id="pages"></input>
+      <label>Number of desired pages (each page is 250 data points)</label>
+      <br>
+      <label>This must be a number!</label>
+
+    </p>
+    <button type="button" onclick="stockx_get()" id="activate">swag</button>
+  </form>
+
+
+  I admit, this isn't much of a frontend, there isn't even any CSS!
+  <br><br>
+  <div>example url:
+    https://stockx.com/api/products/b80ff5b5-98ab-40ff-a58c-83f6962fe8aa/activity?state=480&currency=USD&limit=250&page=1&sort=createdAt&order=DESC&country=US
   </div>
+  <!-- <script>
+
+    stockx_get = () => {
+      const url = document.getElementById("url");
+      console.log(url);
+      const numPages = document.getElementById("pages");
+      const myArr = url.split("&");
+      let jsonString = '';
+      for (let i = 1; i < numPages; i++) {
+        myArr[3] = 'page=' + i;
+        let tempUrl = '' + myArr[0] + myArr[1] + myArr[2] + myArr[3] + myArr[4] + myArr[5] + myArr[6];//this needs to be cleaned up later
+        console.log(tempUrl);
+
+      }
+      //console.log(jsonString);
+      // console.log(myArr);
+    }
+  </script> -->
+
+
+</body>
 
 </html>
