@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="en">
 
 <head>
@@ -18,37 +17,20 @@
       <label>Number of desired pages (each page is 250 data points)</label>
       <br>
       <label>This must be a number!</label>
-
     </p>
-    <button type="button" onclick="stockx_get()" id="activate">swag</button>
+    <button type="button" onclick="stockx_get()" id="activate">swag time</button>
   </form>
-
-
   I admit, this isn't much of a frontend, there isn't even any CSS!
   <br><br>
   <div>example url:
-    https://stockx.com/api/products/b80ff5b5-98ab-40ff-a58c-83f6962fe8aa/activity?state=480&currency=USD&limit=250&page=1&sort=createdAt&order=DESC&country=US
+    <br>
+    https://stockx.com/api/products/d290e592-2552-4a00-a705-3102caecc473/activity?state=480&currency=USD&limit=100&page=1&sort=createdAt&order=DESC&country=US
+    <br>
+    (this will break at some point)
+    <br><br>
+    Note: there has been a change to stockx, where you now have to click the 'view sales' button to get the link from
+    the network activity monitor
   </div>
-  <!-- <script>
-
-    stockx_get = () => {
-      const url = document.getElementById("url");
-      console.log(url);
-      const numPages = document.getElementById("pages");
-      const myArr = url.split("&");
-      let jsonString = '';
-      for (let i = 1; i < numPages; i++) {
-        myArr[3] = 'page=' + i;
-        let tempUrl = '' + myArr[0] + myArr[1] + myArr[2] + myArr[3] + myArr[4] + myArr[5] + myArr[6];//this needs to be cleaned up later
-        console.log(tempUrl);
-
-      }
-      //console.log(jsonString);
-      // console.log(myArr);
-    }
-  </script> -->
-
-
 </body>
 
 </html>

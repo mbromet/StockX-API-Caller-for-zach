@@ -1,54 +1,63 @@
-// const fetch = require('node-fetch');
-// const https = require('https');
-//const xhttp = new XMLHttpRequest();
+// declaring jsonString here is bad practice, but it shouldn't be a problem since this is a simple script
+let jsonString = '';
 /*
 * url must be String
 * numPages must be at least 1
 **/
-stockx_get = () => {
+do_the_thing = () => {
+  jsonString = '';
   const url = document.forms["input information"]["url"].value;
   const numPages = document.forms["input information"]["pages"].value;
-  // console.log(url);
-  // console.log(numPages);
   const myArr = url.split("&");
-  let jsonString = '';
   for (let i = 1; i < numPages; i++) { // this will actually give numPages - 1, but that shouldn't be a problem
     myArr[3] = 'page=' + i;
     let tempUrl = '' + myArr[0] + '&' + myArr[1] + '&' + myArr[2] + '&' + myArr[3] + '&' + myArr[4] + '&' + myArr[5] + '&' + myArr[6];//this needs to be cleaned up later
-    // console.log('temp url: ' + tempUrl);
     fetch(tempUrl)
       .then(data => data.text())
       .then(updatedData => {
         jsonString += updatedData;
-        // console.log(jsonString);
-        console.log('inside of the .then');
-        if (i == numPages) {
-          console.log('inside of if statement: ' + jsonString);
-        }
-      })
-
+      });
   }
-  setTimeout(() => {
-    console.log('timeout happened ');
-    downloadFiles(jsonString, 'stockx-data');
-  }, 3000);
-  //console.log(jsonString);
-  // console.log(myArr);
+  return jsonString;
 }
-const saveData = (function () {
-  const a = document.createElement("a");
-  document.body.appendChild(a);
-  a.style = "display: none";
-  return function (data, fileName) {
-    var json = JSON.stringify(data),
-      blob = new Blob([json], { type: "octet/stream" }),
-      url = window.URL.createObjectURL(blob);
-    a.href = url;
-    a.download = fileName;
-    a.click();
-    window.URL.revokeObjectURL(url);
-  };
-}());
+stockx_get = () => {
+  let data = do_the_thing();
+  setTimeout(() => { // I'm setting this to wait for 3 seconds, change as desired
+    console.log(jsonString);
+    const exportButton = document.getELementb
+    const jsonBlob = new Blob([jsonString]);
+    saveData(jsonBlob);
+  }, 3000)
+}
+
+// saveData is based on this website: https://dev.to/nombrekeff/download-file-from-blob-21ho
+const saveData = (blob, name = 'stockx_sales_data.txt') => {
+  // Convert your blob into a Blob URL (a special url that points to an object in the browser's memory)
+  const blobUrl = URL.createObjectURL(blob);
+
+  // Create a link element
+  const link = document.createElement("a");
+
+  // Set link's href to point to the Blob URL
+  link.href = blobUrl;
+  link.download = name;
+
+  // Append link to the body
+  document.body.appendChild(link);
+
+  // Dispatch click event on the link
+  // This is necessary as link.click() does not work on the latest firefox
+  link.dispatchEvent(
+    new MouseEvent('click', {
+      bubbles: true,
+      cancelable: true,
+      view: window
+    })
+  );
+
+  // Remove link from body
+  document.body.removeChild(link);
+};
 // ConvertToCSV comes from @praneybehl from https://stackoverflow.com/questions/8847766/how-to-convert-json-to-csv-format-and-store-in-a-variable
 function ConvertToCSV(objArray) {
   var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
